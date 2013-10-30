@@ -1,0 +1,28 @@
+$def with(username)
+<div id="top_column">
+<span><a href="/adminuser/$username">首页</a></span>&nbsp;|&nbsp;
+<span><a href="/adminuser_look/$username">查看用户</a></span>&nbsp;|&nbsp;
+<span><a href="/adminuser_add/$username">添加用户</a></span>&nbsp;|&nbsp;
+<span><a href="/logout/$username">退出</a></span>
+</div>
+<br/>
+<br/>
+<div>
+<p class="fonttype1">本系统中的默认密码为：123456</p>
+<p class="fonttype1">请告知用户，登录后自行修改密码</p>
+</div>
+<br/>
+<div>
+<p class="fonttype2">用户名为长度在3-20位之间的汉字、数字、字母或其组合，并且在用户名之后选定用户角色。</p>
+<form>
+<p><span class="fonttype3">用户名：</span><input type="text" id="username" name="username" class="input1"/>
+<select id="userrole">
+<option>教师</option>
+<option>教研员
+</select>
+</p>
+<p><input type="button" value="添加用户" class="button1" id="adduser"/>
+</form>
+<p><span class="error"></span>
+</div>
+<script src="/static/js/adduser.js" ></script>

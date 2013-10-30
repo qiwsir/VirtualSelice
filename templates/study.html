@@ -1,0 +1,31 @@
+$def with(username)
+<div id="top_column">
+<span><a href="/study/$username">首页</a></span>&nbsp;|&nbsp;
+<span><a href="/study_manage_video/$username">管理课程</a></span>&nbsp;|&nbsp;
+<span><a href="/research/$username">在线研修</a></span>&nbsp;|&nbsp;
+<span><a href="/logout/$username">退出</a></span>
+</div>
+
+<div class="text1">
+<p class="fonttype2">$username&nbsp;&nbsp;教研员</p>
+<p>您可以在这里修改密码。注意：密码必须是由字母或者数字组成的3-20位长度的字符串。</p>
+</div>
+
+<div>
+<form>
+<p><input type="text" value="$username" id="username" style="display:none"/>
+<p><span class="fonttype2">新的密码：</span><input class="input1" type="text" id="newpassword" /></p>
+<p><span class="fonttype2">确认输入：</span><input class="input1" type="text" id="renewpassword"/></p>
+<p><input type="button" value="修改密码" class="button1" id="oknewpassword"/></p>
+<p><span class="error"></span></p>
+</form>
+</div>
+
+<div class="text1">
+<p class="fonttype1">教研员使用说明：</p>
+<p>１、上传优质课视频文件。在“管理课程”中实现。<span class="fonttype2">特别注意：</span>本系统只允许上传扩展名为.ogv格式的视频文件，如果您的视频课程文件不是这个扩展名，请进行转化。点击这里下载转化工具。</p>
+<p>２、编辑优质课视频。在“管理课程”中实现。可以通过简单操作，将优质课视频分解为若干片段，并为每个片段命名。指导教师对视频中的每个片段进行研修。</p>
+<p>３、参与研修过程。在“在线研修”中实现。与其他用户一起研修优质课。</p>
+</div>
+
+<script src="/static/js/study.js" ></script>

@@ -1,0 +1,59 @@
+$def with(username,all_user,lastpage,nextpage)
+<div id="top_column">
+<span><a href="/adminuser/$username">首页</a></span>&nbsp;|&nbsp;
+<span><a href="/adminuser_look/$username">查看用户</a></span>&nbsp;|&nbsp;
+<span><a href="/adminuser_add/$username">添加用户</a></span>&nbsp;|&nbsp;
+<span><a href="/logout/$username">退出</a></span>
+</div>
+<br/>
+<br/>
+<div>
+<form>
+<span class='fonttype2'>查询用户：&nbsp;</span>
+<input type="text" id="username" name="username"/>&nbsp;&nbsp;
+<input type="button" id="checkusername" value="查询"/>
+</form>
+<p><span class="error"></span>
+</div>
+<br/>
+<br/>
+<div>
+<table class="table1">
+<tr>
+    <td class="tdtitle1">用户名</td><td class="tdtitle1">角色</td><td class="tdtitle2" colspan="2">操作</td>
+</tr>
+$for every in all_user:
+    <tr><td class="tdtitle3">$every.username</td><td class="tdtitle3">$every.role</td><td class="tdtitle3"><a href="/adminuser_del_user/$username?deluser=$every.username">删除本用户</a></td><td><input type="button" name="$every.username" onclick="changepassword(this)" value="重置密码"/></td>
+
+</table>
+</div>
+
+<script src="/static/js/adduser.js" ></script>
+
+<script language="javascript">
+
+function changepassword(o)
+{
+    username=o.name;
+    $$.post("/adminuser_newpassword/"+username,{username:username},function(data){
+        if (data!=""){
+            alert("新密码是："+data+"。请牢记！");
+        }
+        else{
+            alert("密码重置失败");
+        }
+    },"html");
+}
+</script>
+
+<!--per page 10 -->
+<div>
+<p>---------------------</p>
+</div>
+<div>
+<a href="?page=1">第一页</a>
+$if lastpage>1:
+   <a href="?page=$lastpage">上一页</a>  
+
+<a href="?page=$nextpage">下一页</a>  
+</div>

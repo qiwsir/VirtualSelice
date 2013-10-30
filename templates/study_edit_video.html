@@ -1,0 +1,126 @@
+$def with(username,all_filename,head_filename,video_id)
+
+<div id="top_column">
+<span><a href="/study/$username">首页</a></span>&nbsp;|&nbsp;
+<span><a href="/study_manage_video/$username">管理课程</a></span>&nbsp;|&nbsp;
+<span><a href="/research/$username">在线研修</a></span>&nbsp;|&nbsp;
+<span><a href="/logout/$username">退出</a></span>
+</div>
+<br/>
+<div class="text1">
+<p>您已经上传了优质课的视频文件。现在您可以根据自己的要求，对视频进行“切片”。</p>
+</div>
+<div>
+<table class="table1">
+<tr>
+<td><span class="fonttype2">切片方法</span></td>
+<td>
+<span class="fonttype2">课程标题：</span><span class="fonttype4">$head_filename</span>
+</td>
+<td><span class="fonttype2">标记操作</span></td>
+</tr>
+<tr>
+<td class="tdtitle5">
+<ol>
+<li><span class="fonttype6">选定切片的起始位置。</span>播放视频到指定时间点，或者拖动进度条到某位置。</li>
+<li><span class="fonttype6">“标记”起始位置（时刻）。</span>在视频的进度条上选定了切片的起始位置之后，点击视频右边的“标记”按钮，就将该位置“标记”下来，做为某段视频“切片”起始时刻。</li>
+<li><span class="fonttype6">选定并“标记”切片的结束位置（时刻）。</span>重复上面两步骤的过程，在视频的进度条上选定了切片的结束位置之后，点击“标记”按钮，就将该位置“标记”下来，做为某段视频“切片”结束时刻。</li>
+</ol>
+<p>按照上面的操作方法，将一段比较长的视频可以分割为若干个部分。<span class="fonttype5">特别注意：</span>每段切片的结束时刻必须在比开始时刻之后。</p>
+<p>如果要删除某切片，进入下一步之后可以实现。</p>
+<p>完成切片设置之后，点击“下一步”按钮。当然，不进行切片设计，也能够点击“下一步”按钮，进入后续编辑管理操作。</p>
+</td>
+<td class="tdtitle6">
+
+<video width="480" height="360" id="myvideo" controls>
+<source src="/static/video/$username/$all_filename" type="video/ogg" >
+</video>
+</td>
+<td class="tdtitle5">
+<div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fonttype5">当前时刻(s)：</span><span id="time">0</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="标记" id="choicetime"/>
+<br/>
+<br/>
+</div>
+<div class="timelist" id="list">
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div>
+<form>
+<input type="button" class="button1" value="完成切片设置，下一步" id="uploadtime"/>
+<input type="text" value="$username" id="username" name="username" style="display:none"/>
+<input type="text" value="$video_id" id="video_id" name="video_id" style="display:none"/>
+<input type="text" value="$all_filename" id="filename" name="filename" style="display:none"/>
+</form>
+</div>
+
+<script>
+
+var video=document.getElementById("myvideo");
+video.addEventListener('timeupdate',function(){
+    document.getElementById("time").innerHTML=parseInt(video.currentTime);},false);
+
+
+$$(document).ready(function(){
+    var start_end=0;
+    var end_time=0;
+    var start_time=0;
+    var time=[];
+    $$("#choicetime").click(function(data){
+        var click_time=parseInt(video.currentTime);
+        if(start_end==0)
+        {
+            start_time=click_time;
+            var listtime=$$("#list").html();
+            var str="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class='fonttype5'>开始:</span><span>"+start_time+"</span>";
+            listtime +=str;
+            $$("#list").html(listtime);
+            start_end=1;
+            }
+        else
+        {
+            end_time=click_time;
+            if(end_time>start_time){
+                var listtime=$$("#list").html();
+                var str="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class='fonttype5'>结束：</span><span>"+end_time+"</span><br/><span>&nbsp;&nbsp;&nbsp;&nbsp;----------------------------</></span><br/>";
+                listtime +=str;
+                $$("#list").html(listtime);
+                start_end=0;
+                time.push(start_time,end_time);
+                }
+            else{
+                alert("每个片段的结束时间必须大于开始时间，请从新设置。");
+                start_end=1;
+                }
+            }
+    });
+
+    $$("#uploadtime").click(function(){
+        var video_id=$$("#video_id").val();
+        var username=$$("#username").val();
+        var filename=$$("#filename").val();
+        $$.post("/study_edit_video/"+username+"?video_filename="+filename+"&video_id="+video_id,{video_id:video_id,username:username,filename:filename,time:time},function(data){
+            if(data=="True"){
+                location.href="/study_edit_video_second/"+username+"?video_filename="+filename+"&video_id="+video_id;
+                }else{
+                //location.href="/error";
+                alert(data);
+                    }
+            },"html");
+        //alert(time);
+        });
+});
+
+function delfun(dom)
+{
+    dom.parentNode.parentNode.removeChild(dom.parentNode.previousSibling);
+    dom.parentNode.parentNode.removeChild(dom.parentNode);
+    
+    }
+
+</script>
+

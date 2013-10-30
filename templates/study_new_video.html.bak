@@ -1,0 +1,39 @@
+$def with(username,tell_user)
+
+<div id="top_column">
+<span><a href="/study/$username">首页</a></span>&nbsp;|&nbsp;
+<span><a href="/study_manage_video/$username">管理课程</a></span>&nbsp;|&nbsp;
+<span><a href="/research/$username">在线研修</a></span>&nbsp;|&nbsp;
+<span><a href="/logout/$username">退出</a></span>
+</div>
+<br/>
+<div>
+<p class="fonttype4">$tell_user
+</div>
+<div>
+<form method="POST" enctype="multipart/form-data" action="">
+<p><span class="fonttype2">优质课标题：</span><input class="input1" type="text" id="videotitle" name="videotitle"/></p>
+<p><input type="text" id="username" name="username" value="$username" style="display:none"/></p>
+<input type="file" id="videofile" name="videofile" value="上传视频课程文件"/>
+<p><input type="submit" value="确定上传" id="okupload" class="button2"/></p>
+<p><span class="fonttype2">所上传的文件必须是扩展名为.ogv的视频文件，如果不是，请用视频格式转换工具转换之后再上传。</span></p>
+<p><span>下载视频格式转换工具</span></p>
+</form>
+</div>
+
+<div class="text1">
+<p class="fonttype3">为什么采用ogv格式的视频文件</p>
+<p>ogv影片格式需要由ogg容器格式说起，Ogg是一个自由且开放标准的容器格式，由Xiph Org 基金会所维护。Ogg格式并不受到软体专利的限制，并设计用於有效率地串流媒体和处理高品质的数位多媒体。</p>
+<p>这是本系统采用ogv格式的重要原因：开放。这样就不必担心可能存在的知识产权问题了。</p>
+<p>尊重脑力劳动成果，尊重知识产权，就是维护我们自己的权益。</p>
+</div>
+
+
+<div id="swfupload">    
+<span id="spanButtonPlaceholder"></span>    
+<p id="queueStatus"></p>    
+<ol id="logList"></ol>    
+</div>  
+
+
+

@@ -1,0 +1,136 @@
+$def with(username,all_filename,head_filename,video_id,video_chip_all_item,video_attach,video_bbs)
+
+<article>
+<span><a href="/study/$username">首页</a></span>|
+<span><a href="/study_manage_video/$username">管理课程</a></span>
+<span><a href="/research/$username">在线研修</a></span>
+<span><a href="/logout/$username">退出</a></span>
+</article>
+<br/>
+<article>
+<div>
+<table>
+<tr><td colspan="2">$head_filename</td></tr>
+<tr>
+<td><video width="320" height="240" id="myvideo" controls>
+<source src="/static/video/$all_filename" type="video/ogg">
+</td>
+<td>
+<table>
+$for one in video_chip_all_item:
+    <p><span class="starttime">$one.starttime</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>$one.endtime</span><span>$one.title</span><span class="videoplay">PLAY</span></p>
+
+</table>
+</td>
+</tr>
+</table>
+</div>
+
+<div>
+<p>与本课程相关的附件</p>
+<p><span>附件名称</span><span>下载操作</span></p>
+$for attach in video_attach:
+    <p><span>$attach.attachname</span><span><a href="/static/attachment/$attach.attachname">Download</a></span></p>
+</div>
+
+<div>
+<p>大家的讨论</p>
+$for bbs in video_bbs:
+    <p><span>$bbs.poster&nbsp;&nbsp;说:<span>$:bbs.content</span><span>--$bbs.posttime</span>
+</div>
+
+
+
+<div>
+<form method="post" action="">
+<textarea id="postcontent" name="postcontent" cols="50" rows="4">This is some content that will be editable with TinyMCE.</textarea>
+<br/>
+<input type="button" value="发表评论" id="pushpost" name="pushpost" onclick='GetTinyMceContent()' />
+
+<input type="text" value="$username" id="username" name="username" style="display:none"/>
+<input type="text" value="$video_id" id="video_id" name="video_id" style="display:none"/>
+<input type="text" value="$all_filename" id="video_filename" name="video_filename" style="display:none"/>
+</form>
+</div>
+
+
+<!--tyny_mce.js-->
+<script src="/static/js/tiny_mce/tiny_mce.js"></script>
+<script >
+tinyMCE.init({
+        mode:"textareas",
+        theme:"advanced",
+        language : 'zh-cn',
+        theme_advanced_toolbar_location:'top',
+        theme_advanced_toolbar_align:'left',
+        theme_advanced_resizing : 'true',
+        elements : "postcontenti",
+            
+});
+
+function GetTinyMceContent(){
+    var content=tinyMCE.get('postcontent').getContent();
+    var username=$$("#username").val();
+    var video_filename=$$("#video_filename").val();
+    var video_id=$$("#video_id").val();
+    if(content.length<=0){
+        alert("内容不可为空！");
+        }
+    /*else if(content.length<10||content.length>100){
+                       alert("数字长度应该介于10到100之间！");
+                          return false;
+                            }*/
+    else{
+        end_url=username+"&"+video_filename+"&"+video_id;
+        
+        var content_html_encode=content.replace('+', "&nbsp;");  
+        /*content_html_encode=content_html_encode.replace(/</g, "&lt;");  
+        content_html_encode=content_html_encode.replace(/>/g, "&gt;");  
+        content_html_encode=content_html_encode.replace(/ /g, "&nbsp;");  
+        content_html_encode=content_html_encode.replace(/\'/g, "&#39;");  
+        content_html_encode=content_html_encode.replace(/\"/g, "&quot;");  
+        content_html_encode=content_html_encode.replace(/\n/g, "<br>");  
+*/
+        $$.post("http://www.v.com/research_start/"+end_url,{postinfor:content_html_encode},function(data){
+            alert(data);
+            //if(data=="True"){
+            //    alert("发布成功");
+            //    }else{}
+            },"html");
+    }
+    }
+
+
+
+</script>
+<!--/tiny_mce-->
+<script>
+var video=document.getElementById("myvideo");
+
+
+$$(".videoplay").click(function(){
+    var domspan = $$(this).parent("p").children("span");
+    var start_time=domspan.get(0).innerHTML;
+    var end_time=parseInt(domspan.get(1).innerHTML,10);
+    var end_tag
+
+    //alert(end_time);
+    video.currentTime=start_time;
+    video.play();
+
+
+video.addEventListener("timeupdate",function(){
+end_tag=parseInt(video.currentTime,10);
+
+    $$('#list').text(end_tag);
+    $$("#endtime").text(end_time);
+    
+    if (end_tag==end_time){video.pause();}
+});
+    
+});
+
+
+</script>
+
+

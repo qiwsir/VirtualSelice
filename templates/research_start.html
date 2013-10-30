@@ -1,0 +1,170 @@
+$def with(username,all_filename,head_filename,video_id,video_chip_all_item,video_attach,video_bbs,user_item,video_editor,lastpage,nextpage)
+
+ <!--对用户身份进行判断，根据不同身份呈现不同的栏目-->
+$for one in user_item:
+    $ role=one.role
+     
+$if role=="教研员":
+    <div id="top_column">
+    <span><a href="/study/$username">首页</a></span>&nbsp;|&nbsp;
+    <span><a href="/study_manage_video/$username">管理课程</a></span>&nbsp;|&nbsp;
+    <span><a href="/research/$username">在线研修</a></span>&nbsp;|&nbsp;
+    <span><a href="/logout/$username">退出</a></span>
+    </div>
+$else:
+    <div id="top_column">
+    <span><a href="/teacher/$username">首页</a></span>&nbsp;|&nbsp;
+    <span><a href="/research/$username">在线研修</a></span>&nbsp;|&nbsp;
+    <span><a href="/logout/$username">退出</a></span>
+    </div>
+<br/>
+
+<div>
+<table class="table1">
+<tr>
+    <td class="tdtitle7"><span class="fonttype2">课程标题：</span><span class="fonttype4">$head_filename</span></td>
+    <td class="tdtitle8"><span class="fonttype2">课程切片</span></span>
+</tr>
+<tr>
+    <td class="tdtitle7">
+<video width="480" height="360" id="myvideo" controls>
+<source src="/static/video/$video_editor/$all_filename" type="video/ogg">
+</td>
+    <td class="tdtitle8">
+<table>
+<tr>
+<td class="fonttype2">开始</td><td class="fonttype2">结束</td><td class="fonttype2">片段名称</td><td class="fonttype2">操作</td>
+</tr>
+$for one in video_chip_all_item:
+    <tr>
+    <td class="starttime">$one.starttime</td>
+    <td>$one.endtime</td>
+    <td>$one.title</td>
+    <td class="videoplay">播放</td>
+    </tr>
+
+</table>
+    </td>
+</tr>
+</table>
+</div>
+
+<div>
+<table class="table1">
+<tr>
+    <td class="tdtitle7"><span class="fonttype2">附件标题</span></td><td colspan="2" class="tdwidth320"><span class="fonttype2">操作</span></td>
+</tr>
+$for attach in video_attach:
+    <tr>
+    <td>$attach.attachname</td>
+    <td><a href="/static/attachment/$attach.attachname">Download</a></td>
+    </tr>
+</table>
+</div>
+
+<hr class="dotline" color="blue">
+<div class="text4">
+<p><img src="/static/discussion.gif"/ height="80"></p>
+$for bbs in video_bbs:
+    <p><span class="fonttype4">$bbs.poster</span><span>($bbs.posttime)</span><img src="/static/speak.png"/ align="middle"></p>
+    <div class="text5"><span>$:bbs.content</span></div>
+    <hr class="dotline" color="orange" size="1">
+</div>
+
+<div>
+<a href="?videoname=$all_filename&video_id=$video_id&page=1">第一页</a>
+$if lastpage>1:
+   <a href="?videoname=$all_filename&video_id=$video_id&page=$lastpage">上一页</a>  
+
+<a href="?videoname=$all_filename&video_id=$video_id&page=$nextpage">下一页</a>  
+</div>
+
+
+<div class="text5">
+<form method="post" action="">
+<p><textarea id="postcontent" name="postcontent" cols="70" rows="4"></textarea></p>
+<p><input class="button3" type="button" value="发表我的观点" id="pushpost" name="pushpost" onclick="GetContent()"/></p>
+<input type="text" value="$username" id="username" name="username" style="display:none"/>
+<input type="text" value="$video_id" id="video_id" name="video_id" style="display:none"/>
+<input type="text" value="$all_filename" id="video_filename" name="video_filename" style="display:none"/>
+</form>
+</div>
+
+
+<!--tyny_mce.js-->
+<script src="/static/js/tiny_mce/tiny_mce.js"></script>
+<script >
+tinyMCE.init({
+        mode:"textareas",
+        theme:"advanced",
+        language : 'zh-cn',
+        theme_advanced_toolbar_location:'top',
+        theme_advanced_toolbar_align:'left',
+        theme_advanced_resizing : 'true',
+        elements : "postcontenti",
+        theme_advanced_buttons1:"bold, italic, justifyleft, justifycenter, justifyright, justifyfull,link, unlink, sub, sup, forecolor,charmap,",
+        theme_advanced_buttons2:"",
+        theme_advanced_buttons3:""
+
+
+
+});
+
+function GetContent(){
+    var content=tinyMCE.get('postcontent').getContent();
+    var username=$$("#username").val();
+    var video_filename=$$("#video_filename").val();
+    var video_id=$$("#video_id").val();
+    
+    if(content.length<=0){
+        alert("内容不可为空！");
+        }
+    else if(content.length<10||content.length>1000){
+        alert("内容长度不能小于2个字符，也不能大于1000个字符。");
+        }
+    else{
+        end_url=username+"?videoname="+video_filename+"&video_id="+video_id;
+        $$.post("http://www.v.com/research_start/"+end_url,{postinfor:content},function(data){
+            if(data=="True"){
+                alert("发布成功。");
+                location.href="/research_start/"+end_url;
+                }
+            else{
+                alert("内容发布失败。");
+                }
+            },"html");
+        }
+    }
+
+</script>
+<!--/tiny_mce-->
+<script>
+var video=document.getElementById("myvideo");
+
+
+$$(".videoplay").click(function(){
+    var domspan = $$(this).parent("tr").children("td");
+    var start_time=domspan.get(0).innerHTML;
+    var end_time=parseInt(domspan.get(1).innerHTML,10);
+    var end_tag
+
+    //alert(end_time);
+    video.currentTime=start_time;
+    video.play();
+
+
+video.addEventListener("timeupdate",function(){
+end_tag=parseInt(video.currentTime,10);
+
+    $$('#list').text(end_tag);
+    $$("#endtime").text(end_time);
+    
+    if (end_tag==end_time){video.pause();}
+});
+    
+});
+
+
+</script>
+
+

@@ -1,0 +1,130 @@
+$def with(username,all_filename,head_filename,video_id,video_chip_all_item,video_attach,tell_user)
+<div id="top_column">
+<span><a href="/study/$username">首页</a></span>&nbsp;|&nbsp;
+<span><a href="/study_manage_video/$username">管理课程</a></span>&nbsp;|&nbsp;
+<span><a href="/research/$username">在线研修</a></span>&nbsp;|&nbsp;
+<span><a href="/logout/$username">退出</a></span>
+</div>
+<br/>
+
+<div class="text1">
+<p class="fonttype2">您已经编辑好了视频课程。
+</p>
+<ul class="fonttype2">
+<li>如果还需要为本课程增加有关资料，可以“上传附件”的形式增加；</li>
+<li>如果没有附件，可以点击栏目“在线研修”查看已经发布本课程。</li>
+</ul>
+</div>
+
+<div>
+<table class="table1">
+
+<tr>
+    <td class="tdtitle7">
+<span class="fonttype2">课程标题：</span><span class="fonttype4">$head_filename</span>
+    </td>
+    <td class="tdtitle8"><span class="fonttype2">操作切片</span>
+    </td>
+</tr>
+
+<tr>
+    <td class="tdtitle7">
+<video width="480" height="360" id="myvideo" controls>
+<source src="/static/video/$username/$all_filename" type="video/ogg" >
+</video> 
+    </td>
+    <td class="tdtitle8">
+<table>
+<tr>
+<td class="fonttype2">开始</td><td class="fonttype2">结束</td><td class="fonttype2">片段名称</td><td class="fonttype2">操作</td>
+</tr>
+$for one in video_chip_all_item:
+    <tr><td class="starttime">$one.starttime</td>
+    <td>$one.endtime</td>
+    <td>$one.title</td>
+    <td class="videoplay">播放</td></tr>
+
+</table>
+<hr class="dotline">
+<form>
+<input class="button2" type="button" value="重新编辑视频切片" id="editvideo" name="editvideo"/>
+<br/>
+<input type="text" value="$username" id="username" name="username" style="display:none"/>
+<input type="text" value="$all_filename" id="filename" name="filename" style="display:none"/>
+<input type="text" value="$video_id" id="video_id" name="video_id" style="display:none"/>
+</form>
+</td>
+</tr>
+</table>
+</div>
+
+<div class="text3">
+<form method="POST" enctype="multipart/form-data" action="/study_attachment/$username?video_filename=$all_filename&video_id=$video_id">                                        
+<p>
+    <span class="fonttype2">附件标题：</span>
+    <input class="input1" type="text" id="attachtitle" name="attachtitle"/>
+    <span class="fonttype2">上传附件：</span>
+    <input type="file" id="attachfile" name="attachfile" value="上传附件"/>
+</p>
+<p><input type="text" value="$username" id="username" name="username" style="display:none"/>
+<input type="text" value="$all_filename" id="videofilename" name="videofilename" style="display:none"/>
+<input type="text" value="$video_id" id="video_id" name="video_id" style="display:none"/>
+</p>
+<p><input class="button2" type="submit" value="确定上传附件" id="attachupload"/></p>
+</form>
+</div>
+<div class="text1">
+<p class="fonttype3">$tell_user</p>
+</div>
+<div>
+<table class="table1">
+<tr>
+    <td class="tdtitle7"><span class="fonttype2">已有的附件标题</span></td><td colspan="2" class="tdwidth320"><span class="fonttype2">操作</span></td>
+</tr>
+$for attach in video_attach:
+    <tr>
+    <td>$attach.attachname</td>
+    <td><a href="/study_attachment_del/$video_id?attachname=$attach.attachname">Delete</a></td>
+    <td><a href="/static/attachment/$attach.attachname">Download</a></td>
+    </tr>
+</table>
+</div>
+
+
+
+<script>
+var video=document.getElementById("myvideo");
+
+
+$$(".videoplay").click(function(){
+    var domspan = $$(this).parent("tr").children("td");
+    var start_time=domspan.get(0).innerHTML;
+    var end_time=parseInt(domspan.get(1).innerHTML,10);
+    var end_tag
+
+    //alert(end_time);
+    video.currentTime=start_time;
+    video.play();
+
+
+video.addEventListener("timeupdate",function(){
+end_tag=parseInt(video.currentTime,10);
+
+    $$('#list').text(end_tag);
+    $$("#endtime").text(end_time);
+    
+    if (end_tag==end_time){video.pause();}
+});
+    
+});
+
+$$("#editvideo").click(function(){
+    var username=$$("#username").val();
+    var all_filename=$$("#filename").val();
+    var video_id=$$("#video_id").val();
+    location.href="/study_edit_video/"+username+"?video_filename="+all_filename+"&video_id="+video_id;
+    });
+
+</script>
+
+

@@ -1,0 +1,31 @@
+$def with(username)
+
+<div id="top_column">
+<span><a href="/teacher/$username">首页</a></span>&nbsp;|&nbsp;
+<span><a href="/research/$username">在线研修</a></span>&nbsp;|&nbsp;
+<span><a href="/logout/$username">退出</a></span>
+</div>
+
+<div class="text1">
+<p><span class="fonttype5">在使用本系统之前，请首先阅读<a href="http://www.itdiffer.com/doc-view-632.html" target='_blank'>使用帮助</a>，特别是管理员要负责上传或者给教研员提供上传视频的通道。</span></p>
+<p class="fonttype2">$username&nbsp;&nbsp;老师
+<p>您可以在这里修改密码。注意：密码必须是由字母或者数字组成的3-20位长度的字符串。</p>
+</div>
+
+<div>
+<form>
+<p><input type="text" value="$username" id="username" style="display:none"/>
+<p><span class="fonttype2">新的密码：</span><input class="input1" type="text" id="newpassword" /></p>
+<p><span class="fonttype2">确认输入：</span><input class="input1" type="text" id="renewpassword"/></p>
+<p><input type="button" value="修改密码" id="oknewpassword" class="button1"/></p>
+<p><span class="error"></span></p>
+</form>
+</div>
+
+<div class="text1">
+<p class="fonttype1">使用说明</>
+<p>１、在首页可以修改自己的登录密码。</p>
+<p>２、点击“在线研修”栏目，可以根据自己的需要，选择研修课程，并参与课程讨论。</p>
+</div>
+
+<script src="/static/js/study.js" ></script>

@@ -1,0 +1,17 @@
+$def with(username)
+
+<div>
+<span><a href="/study/$username">首页</a></span>|
+<span><a href="/study_manage_video/$username">管理课程</a></span>
+<span><a href="/research/$username">在线研修</a></span>
+<span><a href="/logout/$username">退出</a></span>
+</div>
+<br/>
+<div>
+<form method="POST" enctype="multipart/form-data" action="">
+<p><span>课程标题：</span><input type="text" id="videotitle" name="videotitle"/></p>
+<p><input type="text" id="username" name="username" value="$username" style="display:none"/></p>
+<p><span>上传视频文件：</span><input type="file" id="videofile" name="videofile" value="上传视频课程文件，必须是mp4格式"/></p>
+<p><input type="submit" value="确定上传" id="okupload"/>
+</form>
+</div>

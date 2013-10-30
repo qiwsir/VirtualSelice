@@ -1,0 +1,100 @@
+$def with(username,all_filename,head_filename,video_id,video_chip_all_item)
+
+<div id="top_column">
+<span><a href="/study/$username">首页</a></span>&nbsp;&nbsp;|&nbsp;&nbsp;
+<span><a href="/study_manage_video/$username">管理课程</a></span>&nbsp;&nbsp;|&nbsp;&nbsp;
+<span><a href="/research/$username">在线研修</a></span>&nbsp;&nbsp;|&nbsp;&nbsp;
+<span><a href="/logout/$username">退出</a></span>
+</div>
+<br/>
+<div>
+<p class="fonttype2">在播放的时候，如果不能正常播放，请刷新本页面之后，再播放该片段。</p>
+</div>
+<div>
+<table class="table1">
+<tr>
+    <td class="tdtitle7"><span class="fonttype2">课程标题：</span><span class="fonttype4">$head_filename</span></td>
+    <td class="tdtitle8"><span class="fonttype2">撰写切片标题名称</span></td>
+</tr>
+<tr>
+<td class="tdtitle7">
+    <video width="480" height="360" id="myvideo" controls>
+    <source src="/static/video/$username/$all_filename" type="video/ogg" >
+    </video> 
+</td>
+<td class="tdtitle8">
+<form>
+<table>
+<tr>
+    <td class="tdwidth40"><span class="fonttype2">开始</span></td>
+    <td class="tdwidth40"><span class="fonttype2">结束</span></td>
+    <td class="tdwidth320"><span class="fonttype2">切片标题</td>
+    <td  colspan='2'><span class="fonttype2">操作</td>
+</tr>
+$for one in video_chip_all_item:
+    <tr>
+    <td class="starttime">$one.starttime</td>
+    <td>$one.endtime</td>
+    <td><input type="text" name="titlename"/></td>
+    <td class="videoplay">播放</td>
+    <td><a href="/study_del_videochip/$username?videofilename=$all_filename&video_id=$video_id&chip=$one.endtime">删除</a></td>
+    </tr>
+</table>
+<input type="button" value="提交片段名称" id="uploadtitle" name="uploadtitle"/>
+<input type="text" value="$username" id="username" name="username" style="display:none"/>
+<input type="text" value="$all_filename" id="filename" name="filename" style="display:none"/>
+<input type="text" value="$video_id" id="video_id" name="video_id" style="display:none"/>
+</form>
+    
+</td>
+</tr>
+</table>
+</div>
+
+
+
+<script>
+var video=document.getElementById("myvideo");
+
+$$(".videoplay").click(function(){
+    var domspan = $$(this).parent("tr").children("td");
+    var start_time=domspan.get(0).innerHTML;
+    var end_time=parseInt(domspan.get(1).innerHTML,10);
+    var end_tag
+
+    video.currentTime=start_time;
+    video.play();
+
+
+video.addEventListener("timeupdate",function(){
+end_tag=parseInt(video.currentTime,10);
+
+  //  $$('#list').text(end_tag);
+    //$$("#endtime").text(end_time);
+    
+    if (end_tag==end_time){video.pause();}
+});
+    
+});
+
+$$("#uploadtitle").click(function(){
+    titlename_list=[]
+    $$("input[name='titlename']").each(function(i,val){
+        titlename_list.push(val.value);
+    });
+    var username=$$("#username").val();
+    var all_filename=$$("#filename").val();
+    var video_id=$$("#video_id").val();
+    $$.post("/study_edit_video_second/"+username+"?video_filename="+all_filename+"&video_id="+video_id,{username:username,all_filename:all_filename,video_id:video_id,titlename:titlename_list},function(data){
+        if(data=="True"){
+            alert("片段标题已经保存");
+            location.href="/study_view_video/"+username+"?video_filename="+all_filename+"&video_id="+video_id;
+            }
+        else{
+            alert(data);
+            }
+        },"html");
+    
+    });
+</script>
+

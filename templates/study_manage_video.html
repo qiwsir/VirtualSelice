@@ -1,0 +1,39 @@
+$def with(username,video_item)
+
+<div id="top_column">
+<span><a href="/study/$username">首页</a></span>&nbsp;|&nbsp;
+<span><a href="/study_manage_video/$username">管理课程</a></span>&nbsp;|&nbsp;
+<span><a href="/research/$username">在线研修</a></span>&nbsp;|&nbsp;
+<span><a href="/logout/$username">退出</a></span>
+</div>
+
+<div class="text1">
+<p><span class="fonttype3">说明</span></p>
+<ul>
+<li>如果有新的视频课程发布，请按照管理员指定的方式上传视频文件，如果不知道如何操作，请联系管理员。</li>
+<li>如果“参与数”为“-1”，则说明该视频尚未编辑，其它用户不能看到，即尚未发布。</li>
+</ul>
+</div>
+<div>
+<form>
+<input type="text" value="$username" id="username" name="username" style="display:none"/>
+<input type="text" class="input1" id="lessonname" name="lessonname"/>
+<input type="button" value="查询优质课名称" id="checklessonname" name="checklessonname"/?
+</form>
+<p><span class="error"></span>
+</div>
+<br/>
+
+<div>
+<table class='table1'>
+<tr><td class="tdtitle1">名称</td><td class="tdtitle1">发布时间</td><td class="tdtitle4">附件</td><td class="tdtitle4">参与数</td><td class="tdtitle2" colspan="2">操作</td></tr>
+$for everyone in video_item:
+    <tr><td class="tdtitle3">$everyone.headvideoname</td>
+    <td class="tdtitle3">$everyone.edittime</td>
+    <td class="tdtitle3">$everyone.attachment</td>
+    <td class="tdtitle3">$everyone.postnumber</td>
+    <td class="tdtitle3"><a href="/study_edit_video/$everyone.editor?video_filename=$everyone.videoname&video_id=$everyone.id">编辑</a></td>
+    <td class="tdtitle3"><a href="/study_del_video/$everyone.editor?video_filename=$everyone.videoname">删除</a></td></tr>
+</table>
+</div>
+<script src="/static/js/study.js" ></script>
