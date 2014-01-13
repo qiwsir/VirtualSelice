@@ -1,6 +1,13 @@
 #! /usr/bin/evn python
 #! -*-coding:utf-8 -*-
- 
+
+"""
+The Code was made by Yeashape Software.The Author is QiWei.
+Our website is www.itdiffer.com.The Email is it@itdiffer.com
+Teacher or Reasearcher can search the lesson in this page.
+And all the lessons is listed in this pange.
+"""
+
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -13,16 +20,12 @@ from model.spefunction import *
 from config import setting
 render=setting.render
  
-urls=("/research/(.*)", "Research",   #研修首页
-    "/research_one/(.*)","ResearchOne"  #搜索课程
+urls=("/research/(.*)", "Research",   
+    "/research_one/(.*)","ResearchOne"  
 )
 
 class Research:
     def GET(self,username):
-        """
-        研修首页
-        列表显示所有发布的研修课程
-        """
         username=username.encode("utf-8")
         try:
             user_item=select_all_by_where("commonuser","username",username)
@@ -44,13 +47,7 @@ class Research:
         
         return render.research(username,video_item,user_item,lastpage,nextpage)
 
-
-
     def POST(self,username):
-        """
-        接收查询字符串
-        按照关键词查询并返回值
-        """
         lesson=web.input()["lesson"]
         username=web.input()["username"]
         try:
@@ -64,9 +61,6 @@ class Research:
         
 class ResearchOne:
     def GET(self,username):
-        """
-        显示关键词查询结果
-        """
         username=username.encode("utf-8")
         lesson=web.input()["keyword"]
         try:

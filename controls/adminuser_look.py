@@ -1,6 +1,12 @@
 #! /usr/bin/evn python
 #! -*-coding:utf-8 -*-
- 
+
+"""
+The Code was made by Yeashape Software.The Author is QiWei.
+Our website is www.itdiffer.com.The Email is it@itdiffer.com
+The administrator can go into this page.He/She can look for users,or delete users,or setting up the password of users.
+"""
+
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -17,26 +23,14 @@ from model.spefunction import *
 from config import setting
 render=setting.render
 
-urls=("/adminuser_look/(.*)", "Lookuser",   #查看用户
-    "/adminuser_del_user/(.*)","Deluser",#删除用户
-    "/adminuser_newpassword/(.*)","Newpassword",    #重置用户密码
+urls=("/adminuser_look/(.*)", "Lookuser",   
+    "/adminuser_del_user/(.*)","Deluser",
+    "/adminuser_newpassword/(.*)","Newpassword",
 )
 
 class Lookuser:
     def GET(self,username):
-        """
-        显示系统中所有用户
-        提供对用户的删除和重置密码操作
-        """
         username=username.encode("utf-8")
-#        try:
-#            check_user=web.input()["user"]
-#            all_user=select_all_by_where("commonuser","username",check_user)
-#        except:
-#            all_user=select_all("commonuser")
-#        finally: 
-#            return render.adminuser_look(username,all_user)
-
 
         params = web.input()
         page = params.page if hasattr(params, 'page') else 1
@@ -56,12 +50,7 @@ class Lookuser:
         
         return render.adminuser_look(username,all_user,lastpage,nextpage)
 
-
     def POST(self,username):
-        """
-        接收要查询的用户名
-        如果数据库中存在则返回值并显示
-        """
         check_user=web.input()["username"].encode("utf-8")
         try:
             user_item=select_all_by_where("commonuser","username",check_user)
@@ -74,9 +63,6 @@ class Lookuser:
 
 class Deluser:
     def GET(self,username):
-        """
-        接收删除用户名并在数据库中删除
-        """
         username=username.encode("utf-8")
         del_username=web.input()["deluser"]
         try:
@@ -88,10 +74,6 @@ class Deluser:
 
 class Newpassword:
     def POST(self,username):
-        """
-        接收要重置密码的用户名
-        按照规则生成新的用户密码并存储于数据库
-        """
         username=web.input()["username"].encode("utf-8")
         newpassword=string.join(random.sample(['2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','m','n','p','r','s','t','u','v','w','x','y','z'], 6)).replace(" ","")
         md5_password=md5_string(str(newpassword))

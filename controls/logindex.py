@@ -1,6 +1,12 @@
 # ! /usr/bin/evn python
 # -*-coding:utf-8 -*-
 
+"""
+The Code was made by Yeashape Software.The Author is QiWei.
+Our website is www.itdiffer.com.The Email is it@itdiffer.com
+The user go into the system through this page:login.
+"""
+
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -17,11 +23,6 @@ urls=("/logindex", "Login",
 
 class Login:
     def POST(self):
-        """
-        接收用户通过登录框提交的信息
-        判断是否存在于数据库
-        判断用户角色并返回角色代码
-        """
         username=web.input()["username"].encode("utf-8")
         userpassword=web.input()["userpwd"].encode("utf-8")
         md5_handshake=create_handshake_md5(username)
@@ -35,7 +36,6 @@ class Login:
                 return "1"
             else:
                 return "0"
-                
         else:
             if check_username_and_password("commonuser",username,userpassword):
                 try:

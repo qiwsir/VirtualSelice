@@ -28,6 +28,7 @@ class Managevideo:
         try:
             lessonname=web.input()["lessonname"]
             video_item=select_like_string_by_where("videoname","videoname",lessonname,"editor",username)
+            return render.study_manage_video_search(username,video_item)
         except:
             path="/alidata/www/cutvideo/static/video/"+username+"/"
             files=os.listdir(path)
@@ -39,10 +40,23 @@ class Managevideo:
                     if bool(f_name_in_videoname) is False:
                         head_filename=f.split(".")[0]
                         insert_video_into_videoname(f,head_filename,username,"No")
-            video_item=select_all_by_where("videoname","editor",username)
-        
-        finally:
-            return render.study_manage_video(username,video_item)
+            #video_item=select_all_by_where("videoname","editor",username)
+            
+            
+            params = web.input()
+            page = params.page if hasattr(params, 'page') else 1
+            perpage =10 
+            offset = (int(page) - 1) * perpage
+            try:
+                video_item=select_all_by_where2("videoname","editor",username,perpage,offset)
+                postcount = select_item_number("videoname")
+            except:
+                return error_url()
+            pages = postcount.count / perpage
+            lastpage=int(page)-1
+            nextpage=int(page)+1
+        #finally:
+            return render.study_manage_video(username,video_item,lastpage,nextpage)
 
     def POST(self,username):
         """
