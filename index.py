@@ -1,10 +1,18 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-import web
+
+"""
+The Code was made by Yeashape Software.The Author is QiWei.
+Our website is www.itdiffer.com.The Email is it@itdiffer.com
+This is the first page.
+"""
+
 import os
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
+
+import web
 
 from config.url import urls
 
@@ -13,8 +21,7 @@ render=setting.render
 
 class Index:
     def GET(self):
-        tell="这是一个让你明白他为什么就那么好的系统"
-        return render.index(tell)
+        return render.index()
 
 app=web.application(urls,globals())
 if __name__ == "__main__":

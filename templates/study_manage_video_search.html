@@ -1,4 +1,4 @@
-$def with(username,video_item,lastpage,nextpage)
+$def with(username,video_item)
 
 <div id="top_column">
 <span><a href="/study/$username">首页</a></span>&nbsp;|&nbsp;
@@ -35,17 +35,6 @@ $for everyone in video_item:
     <td class="tdtitle3"><a href="/study_edit_video/$everyone.editor?video_filename=$everyone.videoname&video_id=$everyone.id">编辑</a></td>
     <td class="tdtitle3"><a href="/study_del_video/$everyone.editor?video_filename=$everyone.videoname">删除</a></td></tr>
 </table>
-</div>
-
-<div>
-<p>---------------------</p>
-</div>
-<div>
-<a href="?page=1">第一页</a>
-$if lastpage>1:
-   <a href="?page=$lastpage">上一页</a>  
-
-<a href="?page=$nextpage">下一页</a>  
 </div>
 
 <script src="/static/js/study.js" ></script>

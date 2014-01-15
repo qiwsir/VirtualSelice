@@ -1,6 +1,12 @@
 #! /usr/bin/evn python
 #! -*-coding:utf-8 -*-
- 
+
+"""
+The Code was made by Yeashape Software.The Author is QiWei.
+Our website is www.itdiffer.com.The Email is it@itdiffer.com
+In this page,user can upload attachment or delete it.
+"""
+
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -15,16 +21,13 @@ from model.spefunction import *
 from config import setting
 render=setting.render
  
-urls=("/study_attachment/(.*)", "Attachment",   #新增附件
-    "/study_attachment_del/(.*)","DelAttach",   #删除附件
+urls=("/study_attachment/(.*)", "Attachment",   
+    "/study_attachment_del/(.*)","DelAttach",   
 )
 
 class Attachment:
 
     def POST(self,username):
-        """
-        接收上传的附件
-        """
         x= web.input(attachfile={})
         username=x.username
         video_all_filename=x.videofilename
@@ -42,36 +45,24 @@ class Attachment:
             return render.study_view_video(username,video_all_filename,video_head_filename,video_id,video_chip_all_item,video_attach,tell_user)
         else:
         
-            filedir=u"/alidata/www/cutvideo/static/attachment"
+            filedir=u"/alidata/www/cutvideo/static/attachment"  #the URL of the store path,you can write a new path
             if 'attachfile' in x:
                 filepath=x.attachfile.filename.replace('\\','/')
                 all_filename=filepath.split('/')[-1]
                 end_filename=all_filename.split(".")[-1]
-            
-            #head_filename=attachtitle.attachtitle
                 filename=head_filename+"."+end_filename
                 fout = open(filedir +'/'+ filename,'wb')
                 fout.write(x.attachfile.file.read()) 
                 fout.close() 
-        
             attachtitle=x.attachtitle
-
-        
             video_attach_tablename="video_attach"+str(video_id)
             insert_value(video_attach_tablename,"attachname",filename)
-
             update_value_by_where("videoname", "attachment", "Yes", "id", video_id)
-
-
             return_url=web.ctx.homedomain+"/study_view_video/"+username+"?video_filename="+video_all_filename+"&video_id="+str(video_id)
             raise web.seeother(return_url)
 
-
 class DelAttach:
     def GET(self,getinfor):
-        """
-        删除附件
-        """
         video_id=getinfor.encode("utf-8")
         attachment_name=web.input()["attachname"].encode("utf-8")
 
@@ -79,7 +70,6 @@ class DelAttach:
             video_item=select_all_by_where("videoname","id",video_id)[0]
             username=video_item.editor
             video_filename=video_item.videoname
-
             video_attach_tablename="video_attach"+str(video_id)
             del_item(video_attach_tablename, "attachname", attachment_name)
         except:

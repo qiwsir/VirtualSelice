@@ -1,6 +1,12 @@
 #! /usr/bin/evn python
 #! -*-coding:utf-8 -*-
- 
+
+"""
+The Code was made by Yeashape Software.The Author is QiWei.
+Our website is www.itdiffer.com.The Email is it@itdiffer.com
+The user who uploaded the video can preview the result that he/she edited.
+"""
+
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -13,14 +19,11 @@ from model.spefunction import *
 from config import setting
 render=setting.render
  
-urls=("/study_view_video/(.*)", "Viewvideo",   #预览
+urls=("/study_view_video/(.*)", "Viewvideo",   
 )
 
 class Viewvideo:
     def GET(self,username):
-        """
-        预览编辑好的视频
-        """
         username=username.encode("utf-8")
 
         all_filename=web.input()["video_filename"].encode("utf-8")

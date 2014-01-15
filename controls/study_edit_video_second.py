@@ -1,6 +1,12 @@
 #! /usr/bin/evn python
 #! -*-coding:utf-8 -*-
- 
+
+"""
+The Code was made by Yeashape Software.The Author is QiWei.
+Our website is www.itdiffer.com.The Email is it@itdiffer.com
+The header of teacher can name the slices of video.
+"""
+
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -15,15 +21,11 @@ from model.spefunction import *
 from config import setting
 render=setting.render
  
-urls=("/study_edit_video_second/(.*)", "EditvideoSecond",   #片段的名称
+urls=("/study_edit_video_second/(.*)", "EditvideoSecond",   
 )
 
 class EditvideoSecond:
     def GET(self,username):
-        """
-        显示片段分割结果
-        等待输入切片名称
-        """
         username=username.encode("utf-8")
         all_filename=web.input()["video_filename"].encode("utf-8")
         head_filename=all_filename.split(".")[0]
@@ -37,9 +39,6 @@ class EditvideoSecond:
         return render.study_edit_video_second(username,all_filename,head_filename,video_id,video_chip_all_item)
 
     def POST(self,username):
-        """
-        接收并存储切片标题名称
-        """
         input_list=web.data().split("&")
         username=input_list[0].split("=")[1].encode("utf-8")
         del input_list[0]
@@ -57,7 +56,6 @@ class EditvideoSecond:
         try:
             for i in range(len(titlename_arry)):
                 titlename=unquote(titlename_arry[i])
-                #titlename=u"这是汉字"
                 titlename_id=int(i+1)
                 update_value_by_where(video_chip_tablename, "title", titlename, "id", titlename_id)
         

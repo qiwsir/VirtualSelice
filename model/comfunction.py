@@ -49,6 +49,10 @@ def select_all_by_where(tablename,column,columnvalue):
     db=conn()
     return db.query("select * from %s where %s='%s' order by id desc"%(tablename,column,columnvalue))
 
+def select_all_by_where2(tablename,column,columnvalue,limit,offset):
+    db=conn()
+    return db.query("select * from %s where %s='%s' order by id desc limit %d offset %d"%(tablename,column,columnvalue,limit,offset))
+
 def select_all_perpage(tablename,offset,perpage):
     db=conn()
     return db.select("%s"%tablename, order="id DESC", offset=offset, limit=perpage)
@@ -137,14 +141,6 @@ def check_username_logined(tablename, username):
     cookied_handshake=web.cookies().get("handshake")
     t={"cookies":web.cookies(),}
     return "%s"%t
-    #if bool(cookied_username) and bool(cookied_handshake):
-    #tabled_handshake=select_all_by_where(tablename, 'username', username)[0].handshake
-    #if tabled_handshake==cookied_handshake:
-    #    return "YES"
-    #else:
-    #    return "NO1"
-    #else:
-    #    return 'NO2'
 
 
 def check_value_in_table(tablename, column, columnvalue):

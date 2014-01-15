@@ -1,6 +1,12 @@
 #! /usr/bin/evn python
 #! -*-coding:utf-8 -*-
- 
+
+"""
+The Code was made by Yeashape Software.The Author is QiWei.
+Our website is www.itdiffer.com.The Email is it@itdiffer.com
+The header of theacher can edit the video:virtual section,name the slices.
+"""
+
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -13,15 +19,11 @@ from model.spefunction import *
 from config import setting
 render=setting.render
  
-urls=("/study_edit_video/(.*)", "Editvideo",   #编辑视频
+urls=("/study_edit_video/(.*)", "Editvideo",   
 )
 
 class Editvideo:
     def GET(self,username):
-        """
-        显示新上传了的视频
-        允许在本页面虚拟切片
-        """
         username=username.encode("utf-8")
         all_filename=web.input()["video_filename"].encode("utf-8")
 
@@ -47,10 +49,6 @@ class Editvideo:
         return render.study_edit_video(username,all_filename,head_filename,video_id)
     
     def POST(self,username):
-        """
-        接收时间点信息
-        并存储切片开始和结束点
-        """
         input_list=web.data().split("&")
         video_id=input_list[0].split("=")[1].encode("utf-8")
         del input_list[0]

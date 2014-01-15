@@ -1,6 +1,12 @@
 #! /usr/bin/evn python
 #! -*-coding:utf-8 -*-
- 
+
+"""
+The Code was made by Yeashape Software.The Author is QiWei.
+Our website is www.itdiffer.com.The Email is it@itdiffer.com
+This page is the index when the header of teacher who reasearch teaching login in this system.
+"""
+
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -13,21 +19,15 @@ from model.spefunction import *
 from config import setting
 render=setting.render
  
-urls=("/study/(.*)", "Study",   #教研员首页
+urls=("/study/(.*)", "Study",
 )
 
 class Study:
     def GET(self,username):
-        """
-        教研员身份用户登录后的首页
-        """
         username=username.encode("utf-8")
         return render.study(username)
     
     def POST(self,username):
-        """
-        接收新密码并存储于数据库
-        """
         newpassword=web.input()["newpassword"].encode("utf-8")
         username=web.input()["username"].encode('utf-8')
         md5_newpassword=md5_string(str(newpassword))
