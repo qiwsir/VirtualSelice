@@ -20,7 +20,8 @@
 
 #帮助#
 
-如果需要帮助，可以联系：
-    it#itdiffer.com(将#替换为@)
-    QQ:26066913
-    WEB:[www.itdiffer.com](htttp://www.itdiffer.com)
+如果需要帮助，可以联系：<br/>
+    <strong>E-mail：</strong>it#itdiffer.com(将#替换为@)<br/>
+    <strong>QQ：</strong>26066913<br/>
+    <strong>WEB：</strong>[www.itdiffer.com](htttp://www.itdiffer.com)<br/>
+    <strong>微博：</strong>[老齐Py](http://weibo.com/qiwsir)
